@@ -1,13 +1,61 @@
 pipeline {
     agent any
+
     tools {
-        maven 'M2_HOME' // This should match the name you configured in Global Tool Configuration
+        maven 'M2_HOME'
     }
+
     stages {
-        stage('Build') {
+        stage('Clean') {
             steps {
-                sh 'mvn clean install'
+                script {
+                    sh 'mvn clean'
+                }
             }
+        }
+
+        stage('Compile') {
+            steps {
+                script {
+                    sh 'mvn compile -DskipTests'
+                }
+            }
+        }
+
+        stage('Sonar-Test') {
+            steps {
+                script {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    sh 'mvn test -DskipCompile'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                script {
+                    sh 'mvn package -DskipTests -DskipCompile'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed!'
+        }
+        success {
+            echo 'Build was successful!'
+        }
+        failure {
+            echo 'Build failed.'
         }
     }
 }
