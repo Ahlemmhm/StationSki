@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven 3.6.3' // This should match the name you configured in Global Tool Configuration
+        maven 'M2_HOME' // This should match the name you configured in Global Tool Configuration
     }
     stages {
         stage('Build') {
