@@ -21,13 +21,10 @@ pipeline {
                 }
             }
         }
-
-        stage('Sonar-Test') {
+	stage('MVN Sonarqube') {
             steps {
-                script {
-                    sh 'mvn sonar:sonar'
-                }
-            }
+                sh "mvn sonar:sonar -Dsonar.login=squ_72d245dc80fbe69602edd4bc4e4c6cad3c0bff6e"
+        }
         }
 
         stage('Test') {
